@@ -1,0 +1,17 @@
+.wrapp {
+    padding: 10px;
+    border: 1px solid grey;
+}
+
+form input {
+    display: block;
+}
+
+form button {
+    margin-top: 2rem;
+    padding: 10px 20px 10px 20px;
+    background-color: grey;
+    border: none;
+    border-radius: 5px;
+
+}
