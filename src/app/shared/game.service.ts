@@ -15,20 +15,20 @@ export class GameService {
   gameMap!: Status[][]
   interval!: number
 
-  x!:number
-  y!:number
-
-  drawingCell!: {x: number, y: number}
+  public drawingCell!: {x: number, y: number}
   winner: any = null
-  winCount = 10
-  playerCount!: number
-  countPC!: number 
+  private winCount = 10
+  public playerCount!: number
+  public countPC!: number 
 
   gameEvent = new Subject<string>()
+  roundTime:any
+
   constructor() {
     this.gameMap = this.generateGameMap(10,10)
     this.winner = null
     this.playerCount = 0
+    this.countPC = 0
   }
 
   generateGameMap(x: number, y: number) {  //генерируем массив с клетками поля 10 на 10
@@ -41,21 +41,23 @@ export class GameService {
     return  gameMapArr
   }
 
-  startGame() {
-    this.onStartGame(10,10)
-  }
+
   onStartGame(x: number, y: number) { // запуск игры
     this.gameMap = this.generateGameMap(x, y)
     this.newRound()
-
-    this.gameEvent.next('Start game') // начало события игры
-    
-    setTimeout(() => {  //время на действия игрока
-      this.handlePlayerReaction(this.drawingCell.x, this.drawingCell.y, Status.pc)
-    },this.interval)
   }
 
   newRound() { //начинаем новый раун ( выбираем случайную клетку)
+    this.preparationRoundMap(this.gameMap)
+
+    this.gameEvent.next("new round")
+    this.roundTime = setTimeout(() => {
+      this.handlePlayerReaction(this.drawingCell.x, this.drawingCell.y, Status.pc)
+    }, this.interval)
+  }
+
+  preparationRoundMap(gameMap: Status[] []) { //( выбираем случайную клетку)
+
     const max = this.gameMap.length * this.gameMap[0].length //выборка ходов, в данном случае это будет 100
     const randomNum = Math.floor(Math.random() * max) + 1 // выбираем случайный ход 
 
@@ -69,11 +71,10 @@ export class GameService {
       randomNum++
       if(randomNum >= max) { randomNum = 0}
 
-    } while (gameMap[coordinats.x][coordinats.y] !== Status.Free) //проверка, что бы не использовались уже заигранные клетки
+    } while (gameMap[coordinats.x][coordinats.y] !== Status.Free) //проверка, что бы не использовались уже разигранные клетки
 
     return coordinats
   } 
-
 
   randomXY(number: number, fieldSize: number) { // случайные координаты для активной клетки
 
@@ -89,7 +90,7 @@ export class GameService {
       return
     }
 
-    clearTimeout(this.interval) 
+    clearTimeout(this.roundTime) 
 
     this.gameMap[x][y] = status 
 
@@ -101,10 +102,8 @@ export class GameService {
       this.gameEvent.next('finished')
       return
     }
-    this.startGame()
+    this.newRound()
   }
- 
-
 
   onChangeScore(status: Status) { // изменение в счете игры
     if(status === Status.Player) { 
@@ -116,16 +115,11 @@ export class GameService {
   }
 
   handleWinner(playerCount: number, countPC: number, winCount: number ) {
-    if(playerCount === winCount) {
+    if(playerCount >= winCount) {
       console.log('Winner: ' + winCount)
       return this.winner = "Player"
-    }
-
-    if(countPC === winCount) {
+    } else if(countPC === winCount) {
       return this.winner = "PC"
-    }
-
-    return
+    } else {return null;}
   }
-
 }

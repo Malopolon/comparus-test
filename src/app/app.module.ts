@@ -6,13 +6,15 @@ import { GameFieldComponent } from './game-field/game-field.component';
 import { GameSettingsComponent } from './game-settings/game-settings.component';
 import { FieldCellComponent } from './game-field/field-cell/field-cell.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AlertComponent } from './shared/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameFieldComponent,
     GameSettingsComponent,
-    FieldCellComponent
+    FieldCellComponent,
+    AlertComponent
   ],
   imports: [
     BrowserModule,

@@ -8,9 +8,8 @@ import { GameService } from '../shared/game.service';
   styleUrls: ['./game-settings.component.css']
 })
 export class GameSettingsComponent implements OnInit {
-
   settingsFrom!: FormGroup
-  constructor(private gameService: GameService) { }
+  constructor(public gameService: GameService) { }
 
   
 
