@@ -22,6 +22,7 @@ export class GameSettingsComponent implements OnInit {
   onSubmit() {
     this.gameService.interval = this.settingsFrom.value['interval']
     this.gameService.onStartGame(10,10)
+    this.settingsFrom.reset()
   }
 
   ngOnInit(){

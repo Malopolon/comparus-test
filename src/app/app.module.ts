@@ -7,6 +7,8 @@ import { GameSettingsComponent } from './game-settings/game-settings.component';
 import { FieldCellComponent } from './game-field/field-cell/field-cell.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AlertComponent } from './shared/alert/alert.component';
+import { PlaceholderDirective } from './shared/placeholder.directive';
+
 
 @NgModule({
   declarations: [
@@ -14,7 +16,8 @@ import { AlertComponent } from './shared/alert/alert.component';
     GameFieldComponent,
     GameSettingsComponent,
     FieldCellComponent,
-    AlertComponent
+    AlertComponent,
+    PlaceholderDirective,
   ],
   imports: [
     BrowserModule,
@@ -22,6 +25,7 @@ import { AlertComponent } from './shared/alert/alert.component';
     ReactiveFormsModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [AlertComponent]
 })
 export class AppModule { }

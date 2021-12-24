@@ -1,7 +1,7 @@
 <div 
     class="gameField-row"
     *ngFor="let row of gameService.gameMap; let x = index">
-        <div
+        <app-field-cell
             class="gameField-cell"
             *ngFor="let cell of row; let y = index" (click)="onClick(x,y)"
             [ngClass]="{
@@ -10,7 +10,7 @@
                 'green': cell === status.Player
             }"
             >
-        </div>
+        </app-field-cell>
 </div>
 
 

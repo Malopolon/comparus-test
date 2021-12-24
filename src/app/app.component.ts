@@ -13,7 +13,7 @@ export class AppComponent implements OnDestroy, OnInit {
   title = 'comparus-test';
 
   @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective
-  private CloseSub!: Subscription
+  private closeSub: Subscription
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -22,7 +22,6 @@ export class AppComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.gameSefvice.gameEvent.subscribe((eventStatus: string) => {
       if( eventStatus === 'finished') {
-        console.log("From AppComponent, who is the Winner?: " + this.gameSefvice.winner)
         this.showGameResults(this.gameSefvice.winner)
       }
     })
@@ -37,12 +36,18 @@ export class AppComponent implements OnDestroy, OnInit {
 
     const componentRef = hostViewContainerRef.createComponent(componentFactory)
     componentRef.instance.winner = winner
-    
+    this.closeSub = componentRef.instance.close.subscribe(() =>{
+      this.closeSub.unsubscribe()
+      hostViewContainerRef.clear()
+      this.gameSefvice.winner =null
+      this.gameSefvice.playerCount = 0
+      this.gameSefvice.countPC = 0
+    })
   }
 
   ngOnDestroy(): void {
-      if( this.CloseSub) {
-        this.CloseSub.unsubscribe()
+      if( this.closeSub) {
+        this.closeSub.unsubscribe()
       }
   }
 }

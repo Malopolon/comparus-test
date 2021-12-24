@@ -12,14 +12,14 @@ export enum Status {
 })
 
 export class GameService {
-  gameMap!: Status[][]
-  interval!: number
+  gameMap: Status[][]
+  interval: number
 
   public drawingCell!: {x: number, y: number}
   winner: any = null
   private winCount = 10
-  public playerCount!: number
-  public countPC!: number 
+  public playerCount: number
+  public countPC: number 
 
   gameEvent = new Subject<string>()
   roundTime:any
@@ -89,10 +89,9 @@ export class GameService {
     if(x !== this.drawingCell.x || y !== this.drawingCell.y) {
       return
     }
-
-    clearTimeout(this.roundTime) 
-
     this.gameMap[x][y] = status 
+    
+    clearTimeout(this.roundTime) 
 
     this.onChangeScore(status)
 

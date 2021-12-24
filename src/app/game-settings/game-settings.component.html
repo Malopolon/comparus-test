@@ -1,6 +1,11 @@
 <div class="wrapp">
     <form [formGroup]="settingsFrom" (ngSubmit)="onSubmit()">
-        <input type="number" id="roundInterval" formControlName="interval">
+        <input 
+            type="text" 
+            id="roundInterval" 
+            formControlName="interval"
+            placeholder="Round time in ms">
+            <p *ngIf="!settingsFrom.valid && settingsFrom.touched" class="alert">This field is required; number must be positive</p>
         <button
             type="submit"
             [disabled]="!settingsFrom.valid"

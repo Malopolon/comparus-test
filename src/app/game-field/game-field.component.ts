@@ -11,19 +11,12 @@ import { Status } from '../shared/game.service';
 export class GameFieldComponent implements OnInit, OnDestroy {
   gameField!: any[][]
   status = Status
-  showAlert = false
 
   constructor(public gameService: GameService) {}
   
   ngOnInit() {
-    this.gameService.gameEvent.subscribe((eventStatus: string) => {
-      console.log("NgOnInit: " + eventStatus)
-      if( eventStatus === 'finished') {
-        this.showAlert = true
-        alert("Game is finished")
-      }
-    })
   }
+  
   onClick(x: number, y: number) {
     this.gameService.handlePlayerReaction(x, y, Status.Player)
   }
