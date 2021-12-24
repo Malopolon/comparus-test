@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { GameService } from '../shared/game.service';
 
 @Component({
   selector: 'app-game-settings',
@@ -7,9 +9,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GameSettingsComponent implements OnInit {
 
-  constructor() { }
+  settingsFrom!: FormGroup
+  constructor(private gameService: GameService) { }
 
-  ngOnInit(): void {
+  
+
+  private initForm() {
+    let interval = null
+    this.settingsFrom = new FormGroup({
+      "interval": new FormControl(interval, [Validators.required, Validators.pattern(/^[1-9]+[0-9]*$/)])
+    })
+  }
+  onSubmit() {
+    this.gameService.interval = this.settingsFrom.value['interval']
+    this.gameService.onStartGame(10,10)
   }
 
+  ngOnInit(){
+    this.initForm()
+  }
 }

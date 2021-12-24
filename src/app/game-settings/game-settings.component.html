@@ -1,11 +1,14 @@
 <div class="wrapp">
-    <form>
-        <input type="text" name="" id="">
-        <button>Start</button>
+    <form [formGroup]="settingsFrom" (ngSubmit)="onSubmit()">
+        <input type="number" id="roundInterval" formControlName="interval">
+        <button
+            type="submit"
+            [disabled]="!settingsFrom.valid"
+            (click)="onSubmit()">Start</button>
     </form>
     
     <hr>
-    <p>Round time: 9999 ms</p>
+    <p>Round time: {{ this.settingsFrom.value['interval'] }}</p>
     <p>Player:</p>
     <p>PC:</p>
 </div>

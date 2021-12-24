@@ -1,17 +1,34 @@
-import { Component, OnInit } from '@angular/core';
+import { NgClass } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { GameService } from '../shared/game.service';
+import { Status } from '../shared/game.service';
 
 @Component({
   selector: 'app-game-field',
   templateUrl: './game-field.component.html',
   styleUrls: ['./game-field.component.css']
 })
-export class GameFieldComponent implements OnInit {
+export class GameFieldComponent implements OnInit, OnDestroy {
+  gameField!: any[][]
+  status = Status
+  showAlert = false
 
-  constructor(private gameService: GameService) { }
-
-  ngOnInit(): void {
-    this.gameService.gnerateGameMap(10,10)
+  constructor(public gameService: GameService) {}
+  
+  ngOnInit() {
+    this.gameService.gameEvent.subscribe((eventStatus: string) => {
+      console.log("NgOnInit: " + eventStatus)
+      if( eventStatus === 'finished') {
+        this.showAlert = true
+        alert("Game is finished")
+      }
+    })
+  }
+  onClick(x: number, y: number) {
+    this.gameService.handlePlayerReaction(x, y, Status.Player)
   }
 
+  ngOnDestroy() {
+    this.gameService.gameEvent.unsubscribe()
+  }
 }

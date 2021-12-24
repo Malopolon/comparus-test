@@ -1,1 +1,16 @@
+<div 
+    class="gameField-row"
+    *ngFor="let row of gameService.gameMap; let x = index">
+        <div
+            class="gameField-cell"
+            *ngFor="let cell of row; let y = index" (click)="onClick(x,y)"
+            [ngClass]="{
+                'yellow': gameService.drawingCell && gameService.drawingCell.x == x && gameService.drawingCell.y == y, 
+                'red': cell === status.pc, 
+                'green': cell === status.Player
+            }"
+            >
+        </div>
+</div>
+
 

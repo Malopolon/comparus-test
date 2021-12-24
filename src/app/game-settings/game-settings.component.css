@@ -12,6 +12,13 @@ form button {
     padding: 10px 20px 10px 20px;
     background-color: grey;
     border: none;
+    box-sizing: border-box;
     border-radius: 5px;
+    cursor: pointer;
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+}
 
+form.ng-valid button:hover {
+    background-color: whitesmoke;
+    border: 1px solid black;
 }
