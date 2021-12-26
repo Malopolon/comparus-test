@@ -31,7 +31,7 @@ export class GameService {
     this.countPC = 0
   }
 
-  generateGameMap(x: number, y: number) {  //генерируем массив с клетками поля 10 на 10
+  generateGameMap(x: number, y: number) {
     const gameMapArr = []
 
     for (let i = 0; i < x; i++) {
@@ -42,50 +42,47 @@ export class GameService {
   }
 
 
-  onStartGame(x: number, y: number) { // запуск игры
+  onStartGame(x: number, y: number) {
     this.gameMap = this.generateGameMap(x, y)
     this.newRound()
   }
 
-  newRound() { //начинаем новый раун ( выбираем случайную клетку)
+  newRound() { 
     this.preparationRoundMap(this.gameMap)
-
-    this.gameEvent.next("new round")
     this.roundTime = setTimeout(() => {
       this.handlePlayerReaction(this.drawingCell.x, this.drawingCell.y, Status.pc)
     }, this.interval)
   }
 
-  preparationRoundMap(gameMap: Status[] []) { //( выбираем случайную клетку)
+  preparationRoundMap(gameMap: Status[] []) {
 
-    const max = this.gameMap.length * this.gameMap[0].length //выборка ходов, в данном случае это будет 100
-    const randomNum = Math.floor(Math.random() * max) + 1 // выбираем случайный ход 
+    const max = this.gameMap.length * this.gameMap[0].length 
+    const randomNum = Math.floor(Math.random() * max) + 1 
 
-    this.drawingCell = this.drawFieldCell(randomNum, max, this.gameMap) // выбирае  случайную клетку для этого раунда
+    this.drawingCell = this.drawFieldCell(randomNum, max, this.gameMap)
   }
 
-  drawFieldCell(randomNum: number,max : number, gameMap: Status [][]) {  // разрисовываем клеточку
+  drawFieldCell(randomNum: number,max : number, gameMap: Status [][]) {
     let coordinats
     do {
       coordinats = this.randomXY(randomNum-1, gameMap[0].length)
       randomNum++
       if(randomNum >= max) { randomNum = 0}
 
-    } while (gameMap[coordinats.x][coordinats.y] !== Status.Free) //проверка, что бы не использовались уже разигранные клетки
+    } while (gameMap[coordinats.x][coordinats.y] !== Status.Free)
 
     return coordinats
   } 
 
-  randomXY(number: number, fieldSize: number) { // случайные координаты для активной клетки
+  randomXY(number: number, fieldSize: number) {
 
     const x  = Math.trunc(number / fieldSize)
-    const y = number - (fieldSize * x)     // получаем случайные координаты
+    const y = number - (fieldSize * x)
     return {x,y}
   }
 
 
-  handlePlayerReaction(x: number, y: number, status: Status) { //статус - кто нажал или нет на клетку
-    console.log("handle Player Reaction: "+ status)
+  handlePlayerReaction(x: number, y: number, status: Status) {
     if(x !== this.drawingCell.x || y !== this.drawingCell.y) {
       return
     }
@@ -104,10 +101,9 @@ export class GameService {
     this.newRound()
   }
 
-  onChangeScore(status: Status) { // изменение в счете игры
+  onChangeScore(status: Status) {
     if(status === Status.Player) { 
       this.playerCount++
-      console.log('Player count ' + this.playerCount)
     } else {
       this.countPC++
     }
@@ -115,10 +111,9 @@ export class GameService {
 
   handleWinner(playerCount: number, countPC: number, winCount: number ) {
     if(playerCount >= winCount) {
-      console.log('Winner: ' + winCount)
       return this.winner = "Player"
-    } else if(countPC === winCount) {
+    } else if(countPC >= winCount) {
       return this.winner = "PC"
-    } else {return null;}
+    } else {return null}
   }
 }
