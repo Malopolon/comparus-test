@@ -9,12 +9,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class AlertComponent implements OnInit{
   alertTitle!: string
   alertMessage!: string
-
+  
+  @Input() playerScore: number
+  @Input() pcScore: number
   @Input() winner: string
   @Output() close = new EventEmitter<void>()
   constructor() { }
     ngOnInit(): void {
-      console.log(this.winner)
+        console.log(this.pcScore)
         switch (this.winner) {
           case 'Player':
             this.alertTitle = 'Congratulations',

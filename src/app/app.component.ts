@@ -22,12 +22,12 @@ export class AppComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.gameSefvice.gameEvent.subscribe((eventStatus: string) => {
       if( eventStatus === 'finished') {
-        this.showGameResults(this.gameSefvice.winner)
+        this.showGameResults(this.gameSefvice.winner, this.gameSefvice.playerCount, this.gameSefvice.countPC)
       }
     })
   }
 
-  private showGameResults (winner: string) {
+  private showGameResults (winner: string, playerScore: number, pcScore: number) {
 
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent)
 
@@ -36,6 +36,8 @@ export class AppComponent implements OnDestroy, OnInit {
 
     const componentRef = hostViewContainerRef.createComponent(componentFactory)
     componentRef.instance.winner = winner
+    componentRef.instance.playerScore = playerScore
+    componentRef.instance.pcScore = pcScore
     this.closeSub = componentRef.instance.close.subscribe(() =>{
       this.closeSub.unsubscribe()
       hostViewContainerRef.clear()
